@@ -53,7 +53,7 @@ function feedefy_settings_init() {
     );
     add_settings_field(
         'lang',
-        'Widget Language (ISO 639-1)',
+        'Language Code (ISO 639-1)',
         'lang_field_cb',
         'feedefy-settings',
         'feedefy_section'
