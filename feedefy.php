@@ -39,7 +39,7 @@ function feedefy_settings_init() {
 
     add_settings_section(
         'feedefy_section',
-        'Custom Script Settings',
+        'Feedefy Widget Settings',
         'feedefy_section_cb',
         'feedefy-settings'
     );
@@ -53,7 +53,7 @@ function feedefy_settings_init() {
     );
     add_settings_field(
         'lang',
-        'Widget Language',
+        'Widget Language (ISO 639-1)',
         'lang_field_cb',
         'feedefy-settings',
         'feedefy_section'
