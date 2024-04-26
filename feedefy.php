@@ -2,7 +2,6 @@
 /*
 Plugin Name: Feedefy Widget
 Description: Injects Feedefy Widget into your Wordpress website.
-Version: 1.0
 */
 
 // Add settings menu item
@@ -92,12 +91,11 @@ function inject_script() {
     $lang = get_option('lang');
 
     if (!empty($project_id)) {
-      $script_url = 'https://app.feedefy.com/embed.js?id=' . esc_attr($project_id);
+      $script_url = esc_url('https://app.feedefy.com/embed.js?id=') . esc_attr($project_id);
 
       // Check if the user is logged in and append email as a query parameter
       if (is_user_logged_in()) {
-        global $current_user;
-        get_currentuserinfo(); // Ensure user data is populated
+        $current_user = wp_get_current_user(); // Get current user
     
         $user_email = $current_user->user_email;
       }
@@ -116,12 +114,23 @@ function inject_script() {
 
       $script_tag .= '></script>';
 
-      echo $script_tag;
+      echo wp_kses($script_tag, array(
+        'script' => array(
+            'defer' => array(),
+            'src' => array(),
+            'lang' => array(),
+            'user-id' => array()
+        )
+      ));
     } else {
       // If Project ID is missing, log an error to the browser console
-      echo '<script>';
-      echo 'console.error("Feedefy Project ID is missing. Please set the Project ID in the plugin settings.");';
-      echo '</script>';
+      $script_error = '<script>';
+      $script_error .= 'console.error("Feedefy Project ID is missing. Please set the Project ID in the plugin settings.");';
+      $script_error .= '</script>';
+
+      echo wp_kses($script_error, array(
+          'script' => array()
+      ));
     }
 }
 add_action('wp_footer', 'inject_script');
